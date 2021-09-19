@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import TodoForm from '../components/TodoForm';
 import { useCallback } from 'react';
-import { addTodo } from '../redux/actions';
+import { addTodo } from '../redux/modules/todos';
 //컨테이너 -> 역할 부분 이어주는 부분
 
 
@@ -10,6 +10,7 @@ function TodoFormContainer () {
    
    const add = useCallback((text)=>{
     dispatch(addTodo(text))
+    console.log(text)
    },[dispatch])
   
     return <TodoForm add = {add}/>
