@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import UserList from "../components/UserList"
-import { getUsersPromise, getUsersThunk } from "../redux/modules/users"
+import { getUsersPromise, getUsersSagaStart , getUsersThunk } from "../redux/modules/users"
 
 export default function UserListContainer(){
     const users = useSelector((state)  => state.users.data)
@@ -9,7 +9,8 @@ export default function UserListContainer(){
     const dispatch = useDispatch();
     
     const getUsers = useCallback(()=> {
-        dispatch(getUsersThunk());
+        dispatch(getUsersSagaStart());
+        // dispatch(getUsersThunk());
         //thunk 대신 프로미스
         // dispatch(getUsersPromise()); //pending, fullfill 사용, payload 에서 사용됨
     },[dispatch])

@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { put, delay, call, takeEvery} from 'redux-saga/effects'
+import { push } from "connected-react-router";
 //users
 const GET_USERS_START = "to-do-redux/users/GET_USERS_START" //깃헙 API 호출 시작을 의미
 const GET_USERS_SUCCESS = "to-do-redux/users/GET_USERS_SUCCESS" //깃헙 API 호출에 대한 응답이 성공인 경우
@@ -124,3 +126,26 @@ export function getUsersThunk() {
       }
     };
   }
+
+  //redux-saga -사이드 이펙트 로직
+
+  const GET_USERS_SAGA_START = "GET_USERS_SAGA_START"
+  export function* getUsersSaga(action){
+    try {
+        yield put(getUsersStart());
+        yield delay(2000);
+        const res = yield call(axios.get,"https://api.github.com/users");
+        yield put(getUsersSucceess(res.data));
+        yield put(push("/"));
+      } catch (error) {
+        yield put(getUsersFail(error));
+      }
+  }
+export function getUsersSagaStart(){
+    return {
+        type: GET_USERS_SAGA_START,
+    }
+}
+export function* usersSaga() {
+  yield takeEvery(GET_USERS_SAGA_START, getUsersSaga);
+}
